@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class MediaPlayerViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,5 +15,9 @@ class ViewController: UIViewController {
     }
 
 
+}
+
+#Preview {
+    return UINavigationController(rootViewController: MediaPlayerViewController())
 }
 
