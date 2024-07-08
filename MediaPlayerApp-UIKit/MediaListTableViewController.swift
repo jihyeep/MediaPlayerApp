@@ -9,6 +9,7 @@ import UIKit
 
 class MediaListTableViewController: UITableViewController {
     let items: [MediaItem] = MediaItem.samples
+    var selectedIndex: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,9 +47,31 @@ class MediaListTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let item = items[indexPath.row]
+        configurePlayerViewController(indexPath.row)
+    }
 
-        let mediaPlayerViewController = MediaPlayerViewController()
+    func configurePlayerViewController(_ itemIndex: Int) {
+        guard items.indices.contains(itemIndex) else { return }
+        
+        let item = items[itemIndex]
+        let mediaPlayerViewController = MediaPlayerViewController(item: item)
+        
+        // 이전 버튼 설정
+        if itemIndex > 0 {
+            mediaPlayerViewController.goPrev = { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+                self?.configurePlayerViewController(itemIndex - 1)
+            }
+        }
+        
+        // 다음 버튼 설정
+        if itemIndex < items.count - 1 {
+            mediaPlayerViewController.goNext = { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+                self?.configurePlayerViewController(itemIndex + 1)
+            }
+        }
+        
         navigationController?.pushViewController(mediaPlayerViewController, animated: true)
     }
 }
