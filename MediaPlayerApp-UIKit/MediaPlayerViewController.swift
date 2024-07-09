@@ -203,8 +203,21 @@ class MediaPlayerViewController: UIViewController {
         player.pause()
     }
     
-    @objc func seekMusic(_ sender: UIProgressView) {
-        print(sender)
+    @objc func seekMusic(_ sender: UIPanGestureRecognizer) {
+        // PanGesture의 위치를 가져옴
+        let location = sender.location(in: progressBar)
+        
+        // progressBar의 너비와 위치를 이용하여 진행률을 계산
+        let progress = location.x / progressBar.bounds.width
+        
+        // 진행률을 이용하여 음악 재생 위치를 설정
+        let duration = player.currentItem?.duration.seconds ?? 0
+        let newTime = duration * Double(progress)
+        let seekTime = CMTime(seconds: newTime, preferredTimescale: 1)
+        
+        player.seek(to: seekTime)
+        
+        print("Seeking to time: \(newTime) seconds")
     }
 }
 
