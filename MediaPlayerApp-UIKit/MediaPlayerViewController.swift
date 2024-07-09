@@ -67,6 +67,18 @@ class MediaPlayerViewController: UIViewController {
         return view
     }()
     
+    private let timeLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .black.withAlphaComponent(0.7)
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 12)
+        label.textAlignment = .center
+        label.layer.cornerRadius = 4
+        label.layer.masksToBounds = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     init(item: MediaItem) {
         self.item = item
         super.init(nibName: nil, bundle: nil)
@@ -114,6 +126,10 @@ class MediaPlayerViewController: UIViewController {
             playControlStack.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             playControlStack.topAnchor.constraint(equalTo: progressBar.bottomAnchor, constant: 30),
         ])
+        
+        // 시간 레이블 추가
+        view.addSubview(timeLabel)
+        timeLabel.isHidden = true
         
         playButton.addAction(UIAction { [weak self] _ in
             self?.play()
@@ -216,6 +232,8 @@ class MediaPlayerViewController: UIViewController {
         let seekTime = CMTime(seconds: newTime, preferredTimescale: 1)
         
         player.seek(to: seekTime)
+        
+        // TODO: - 재생 위치 시간 시각화
         
         print("Seeking to time: \(newTime) seconds")
     }
