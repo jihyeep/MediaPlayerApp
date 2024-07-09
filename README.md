@@ -18,8 +18,8 @@
 
 ## Screen
 
-<video src="https://github.com/jihyeep/MediaPlayerApp/assets/122449708/eaf12193-2aa7-45d3-a0cb-2aec672122ab" width="300" height="600">
-
+<video src="https://github.com/jihyeep/MediaPlayerApp/assets/122449708/eaf12193-2aa7-45d3-a0cb-2aec672122ab" width="300" height="600" controls>
+</video>
 
 ## Update
 
