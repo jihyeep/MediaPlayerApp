@@ -25,6 +25,7 @@ class MediaPlayerViewController: UIViewController {
     
     lazy var playerItem = AVPlayerItem(url: item.url)
     lazy var player = AVPlayer(playerItem: playerItem)
+    private var playerLayer: AVPlayerLayer?
     
     var goPrev: (() -> Void)?
     var goNext: (() -> Void)?
@@ -85,32 +86,32 @@ class MediaPlayerViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.addSubview(imageView)
+        self.view.addSubview(imageView)
         imageView.image = UIImage(systemName: item.isVideo ? "video.square.fill" : "music.note")
         imageView.contentMode = .scaleAspectFit
         imageView.backgroundColor = .systemGray5
         
         NSLayoutConstraint.activate([
-            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 150),
-            imageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+            imageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            imageView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 150),
+            imageView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.5),
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor)
         ])
         
-        view.addSubview(progressBar)
+        self.view.addSubview(progressBar)
         
         NSLayoutConstraint.activate([
-            progressBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            progressBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            progressBar.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            progressBar.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             progressBar.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 40),
             progressBar.heightAnchor.constraint(equalToConstant: 8)
         ])
         
-        view.addSubview(playControlStack)
+        self.view.addSubview(playControlStack)
         
         NSLayoutConstraint.activate([
-            playControlStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            playControlStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            playControlStack.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            playControlStack.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             playControlStack.topAnchor.constraint(equalTo: progressBar.bottomAnchor, constant: 30),
         ])
         
@@ -173,14 +174,31 @@ class MediaPlayerViewController: UIViewController {
     
     func play() {
         print("play")
-        player.play()
+        
+        if item.isVideo {
+            imageView.isHidden = true
+            
+            playerLayer = AVPlayerLayer(player: player)
+            playerLayer?.frame = self.view.bounds
+            playerLayer?.videoGravity = .resizeAspect
+            
+            if let playerLayer = playerLayer {
+                self.view.layer.insertSublayer(playerLayer, above: progressBar.layer)
+                player.play()
+                
+                self.view.bringSubviewToFront(progressBar)
+                self.view.bringSubviewToFront(playControlStack)
+            }
+        } else {
+            player.play()
+        }
     }
     
     func pause() {
         print("pause")
         player.pause()
     }
-
+    
     @objc func seekMusic(_ sender: UIProgressView) {
         print(sender)
     }

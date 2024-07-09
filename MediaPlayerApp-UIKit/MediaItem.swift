@@ -15,9 +15,9 @@ struct MediaItem {
 
 extension MediaItem {
     static let samples = [
-        MediaItem(url: Bundle.main.url(forResource: "AudioSample1", withExtension: "mp3")!, title: "Small World", isVideo: false),
-        MediaItem(url: Bundle.main.url(forResource: "AudioSample2", withExtension: "mp3")!, title: "sample", isVideo: false),
-        MediaItem(url: Bundle.main.url(forResource: "AudioSample3", withExtension: "mp3")!, title: "sample2", isVideo: false),
+        MediaItem(url: Bundle.main.url(forResource: "AudioSample1", withExtension: "mp3")!, title: "sample", isVideo: false),
+        MediaItem(url: Bundle.main.url(forResource: "AudioSample2", withExtension: "mp3")!, title: "sample2", isVideo: false),
+        MediaItem(url: Bundle.main.url(forResource: "AudioSample3", withExtension: "mp3")!, title: "Small World", isVideo: false),
         MediaItem(url: Bundle.main.url(forResource: "VideoSample1", withExtension: "mp4")!, title: "Bigbang - Monster", isVideo: true),
         MediaItem(url: Bundle.main.url(forResource: "VideoSample2", withExtension: "mov")!, title: "Samsung Premiere 2013 Opening", isVideo: true),
         MediaItem(url: Bundle.main.url(forResource: "VideoSample3", withExtension: "mov")!, title: "SaturnV", isVideo: true)
