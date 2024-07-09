@@ -179,15 +179,19 @@ class MediaPlayerViewController: UIViewController {
             imageView.isHidden = true
             
             playerLayer = AVPlayerLayer(player: player)
-            playerLayer?.frame = self.view.bounds
+            
+            // playerLayer 프레임 크기를 비율에 맞춰 설정
+            let videoAspectRatio: CGFloat = 16.0 / 9.0 /// 16:9 비율
+            let playerWidth = view.bounds.width
+            let playerHeight = playerWidth / videoAspectRatio
+            let playerYPosition = imageView.frame.origin.y
+            
+            playerLayer?.frame = CGRect(x: 0, y: playerYPosition, width: playerWidth, height: playerHeight)
             playerLayer?.videoGravity = .resizeAspect
             
             if let playerLayer = playerLayer {
-                self.view.layer.insertSublayer(playerLayer, above: progressBar.layer)
+                self.view.layer.addSublayer(playerLayer)
                 player.play()
-                
-                self.view.bringSubviewToFront(progressBar)
-                self.view.bringSubviewToFront(playControlStack)
             }
         } else {
             player.play()
